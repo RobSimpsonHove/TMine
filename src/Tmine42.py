@@ -119,11 +119,19 @@ def find():
 
     n=0
     linecount=0
+
+    badpatterns = open(tmp+"badpatterns.txt", mode="w", encoding="utf-8")
     for line in f1:
         linecount += 1
-        if re.search(selection, line,re.IGNORECASE):
-            f2.write(line)
-            n += 1
+        try:
+            if re.search(selection, line,re.IGNORECASE):
+                f2.write(line)
+                n += 1
+        except:
+            print('BAD PATTERN in find: ' + selection)
+            badpatterns.write('BAD PATTERN in find: ' + selection)
+            return
+    badpatterns.close()
     f1.close()
     f2.close()
 
@@ -471,7 +479,7 @@ def flag_patterns():
                         marked = re.sub(rhs_pattern, myflag + ',\\1', marked)
                     except:
                         print('BAD PATTERN in positive flagging: '+  pattern)
-                        badpatterns.write('BAD PATTERN in positive label flagging: '+  pattern)
+                        badpatterns.write('BAD PATTERN in positive flagging: '+  pattern)
 
             elif '!' in pattern:  # NEGATIVES
                 p=pattern.rstrip().split("!")   #cheese>dairy
@@ -494,15 +502,15 @@ def flag_patterns():
                         marked = re.sub(lhs_flag,'\\1\\2', marked)
                     except:
                         print('BAD PATTERN in negative label flagging: '+  pattern)
-                        badpatterns.write('BAD PATTERN in positive label flagging: '+  pattern)
+                        badpatterns.write('BAD PATTERN in negative label flagging: '+  pattern)
 
                 else:   # pattern is not flagname, just text, so search RHS
                     try:
                         negative_pattern=re.compile('(\n(?:(?:[^#,])+,)*)'+myflag+',((?:(?:[^#,])+,)*##[^\n]+('+mypattern+')[^\n]*)',re.IGNORECASE)
                         marked = re.sub(negative_pattern , '\\1\\2', marked)
                     except:
-                        print('BAD PATTERN in negative label flagging: '+  pattern)
-                        badpatterns.write('BAD PATTERN in positive label flagging: '+  pattern)
+                        print('BAD PATTERN in negative flagging: '+  pattern)
+                        badpatterns.write('BAD PATTERN in negative flagging: '+  pattern)
 
         patterns.close()
         badpatterns.close()
