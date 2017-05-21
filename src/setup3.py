@@ -17,7 +17,7 @@ os.environ['TCL_LIBRARY'] = "C:\\Users\\ro020si\\Python36\\tcl\\tcl8.6"
 os.environ['TK_LIBRARY'] = "C:\\Users\\ro020si\\Python36\\tcl\\tk8.6"
 
 setup(  name = "TMine",
-        version = "3.40",
+        version = "3.42",
         description = "TMine42",
         options = {"build_exe": build_exe_options},
         executables = [Executable("Tmine42.py", base=base,icon="icon.ico")])
